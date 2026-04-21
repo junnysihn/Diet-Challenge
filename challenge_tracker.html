@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 6주 다이어트 챌린지</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#080808;--bg2:#101010;--bg3:#181818;
+  --white:#F0EDE6;--muted:#999;--dim:#666;
+  --red:#FF2D2D;--orange:#FF6B00;--gold:#FFD700;
+  --green:#4CAF50;--blue:#2D6FFF;--border:#1E1E1E;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--white);font-family:'Noto Sans KR',sans-serif;-webkit-font-smoothing:antialiased;}
+
+/* API 배너 */
+#api-banner{background:#0A0800;border-bottom:2px solid var(--orange);padding:14px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+#api-banner label{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--orange);flex-shrink:0;}
+#api-input{flex:1;min-width:260px;background:#111;border:1px solid #333;color:var(--white);padding:9px 14px;border-radius:8px;font-size:12px;font-family:monospace;}
+#api-input:focus{outline:none;border-color:var(--orange);}
+#save-api{background:var(--orange);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;}
+#api-ok{font-size:12px;color:var(--green);}
+
+/* 네비 */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;}
+.logo span{color:var(--red);}
+.tabs{display:flex;gap:4px;}
+.tab{padding:7px 14px;border-radius:100px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:transparent;color:var(--dim);transition:all .2s;}
+.tab.on{background:var(--red);color:#fff;}
+
+/* 섹션 */
+.sec{display:none;max-width:880px;margin:0 auto;padding:24px 18px;}
+.sec.on{display:block;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,7vw,52px);letter-spacing:2px;margin-bottom:4px;}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.7;}
+.stag{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:10px;display:block;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:12px;}
+
+/* 팀 버튼 */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+@media(max-width:480px){.tgrid{grid-template-columns:1fr;}}
+.tbtn{border-radius:14px;padding:18px;text-align:left;border:1px solid var(--border);background:var(--bg3);cursor:pointer;transition:all .2s;}
+.tbtn:hover{transform:translateY(-2px);}
+.tbtn.sel{transform:translateY(-2px);}
+.tbtn.jh{border-color:rgba(45,111,255,.3);}
+.tbtn.jh.sel{background:rgba(45,111,255,.1);border-color:var(--blue);}
+.tbtn.jj{border-color:rgba(255,107,0,.3);}
+.tbtn.jj.sel{background:rgba(255,107,0,.1);border-color:var(--orange);}
+.tbtn.gh{border-color:rgba(255,45,45,.3);}
+.tbtn.gh.sel{background:rgba(255,45,45,.1);border-color:var(--red);}
+.tbtn.dh{border-color:rgba(76,175,80,.3);}
+.tbtn.dh.sel{background:rgba(76,175,80,.1);border-color:var(--green);}
+.tc{font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:5px;}
+.tbtn.jh .tc{color:var(--blue);}
+.tbtn.jj .tc{color:var(--orange);}
+.tbtn.gh .tc{color:var(--red);}
+.tbtn.dh .tc{color:var(--green);}
+.tn{font-size:18px;font-weight:900;color:var(--white);line-height:1.2;margin-bottom:3px;}
+.tm{font-size:11px;color:var(--muted);}
+
+/* 이름 */
+.ngrid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px;}
+.nbtn{padding:8px 16px;border-radius:100px;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-size:13px;cursor:pointer;transition:all .15s;}
+.nbtn:hover{color:var(--white);}
+.nbtn.sel{font-weight:700;color:var(--white);}
+.jh .nbtn.sel{background:rgba(45,111,255,.15);border-color:var(--blue);}
+.jj .nbtn.sel{background:rgba(255,107,0,.15);border-color:var(--orange);}
+.gh .nbtn.sel{background:rgba(255,45,45,.15);border-color:var(--red);}
+.dh .nbtn.sel{background:rgba(76,175,80,.15);border-color:var(--green);}
+
+/* 출석 달력 */
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px;}
+@media(max-width:420px){.wgrid{grid-template-columns:repeat(4,1fr);}}
+.dbtn{aspect-ratio:1;border-radius:10px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .15s;}
+.dbtn .dl{font-size:9px;color:var(--dim);letter-spacing:1px;}
+.dbtn .dd{font-size:13px;font-weight:700;color:var(--muted);}
+.dbtn.chk{border-color:var(--green);background:rgba(76,175,80,.1);}
+.dbtn.chk .dd,.dbtn.chk .dl{color:var(--green);}
+.dbtn.today{border-color:var(--gold);}
+.dbtn.today .dd{color:var(--gold);}
+
+/* 미션 입력 */
+.minput{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px;}
+.irow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.irow input{flex:1;min-width:100px;background:#111;border:1px solid var(--border);color:var(--white);padding:10px 14px;border-radius:9px;font-size:16px;font-weight:700;font-family:'Noto Sans KR',sans-serif;}
+.irow input:focus{outline:none;border-color:var(--red);}
+.iunit{font-size:13px;color:var(--muted);white-space:nowrap;}
+.sbtn{background:var(--red);color:#fff;border:none;padding:10px 22px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.sbtn:hover{background:#e02020;}
+.sbtn.green{background:var(--green);}
+.sbtn.green:hover{background:#43a047;}
+.sbtn:disabled{background:var(--dim);cursor:not-allowed;}
+
+/* 진행바 */
+.prow{margin-bottom:8px;}
+.plabel{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;}
+.plabel .pn{color:var(--muted);}
+.plabel .pv{font-weight:700;color:var(--white);}
+.pbar{height:8px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+.pfill{height:100%;border-radius:100px;transition:width .5s ease;}
+.pf-red{background:var(--red);}
+.pf-orange{background:var(--orange);}
+.pf-green{background:var(--green);}
+.pf-blue{background:var(--blue);}
+
+/* 현황카드 */
+.bcard{border-radius:16px;padding:22px;margin-bottom:12px;border:1px solid var(--border);}
+.bcard.jh{background:linear-gradient(135deg,#060910,#040608);}
+.bcard.jj{background:linear-gradient(135deg,#0E0700,#090500);}
+.bcard.gh{background:linear-gradient(135deg,#0E0303,#090202);}
+.bcard.dh{background:linear-gradient(135deg,#050E05,#030903);}
+.bhdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.bcl .bcoach{font-size:10px;font-weight:700;letter-spacing:3px;margin-bottom:3px;}
+.bcard.jh .bcoach{color:var(--blue);}
+.bcard.jj .bcoach{color:var(--orange);}
+.bcard.gh .bcoach{color:var(--red);}
+.bcard.dh .bcoach{color:var(--green);}
+.bcl .bname{font-size:18px;font-weight:900;color:var(--white);}
+.bcr{text-align:right;}
+.bcr .btotal{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1;}
+.bcard.jh .btotal{color:var(--blue);}
+.bcard.jj .btotal{color:var(--orange);}
+.bcard.gh .btotal{color:var(--red);}
+.bcard.dh .btotal{color:var(--green);}
+.bcr .bsub{font-size:11px;color:var(--muted);}
+.mrows{display:flex;flex-direction:column;gap:7px;margin-top:14px;}
+.mrow{display:flex;align-items:center;gap:8px;}
+.mname{font-size:12px;color:var(--muted);width:58px;flex-shrink:0;text-align:right;}
+.mbar{flex:1;height:6px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+.mval{font-size:11px;color:var(--muted);width:52px;text-align:right;flex-shrink:0;}
+
+/* 순위 */
+.rcard{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:16px 18px;margin-bottom:10px;}
+.rnum{font-family:'Bebas Neue',sans-serif;font-size:30px;width:34px;flex-shrink:0;}
+.r1{color:var(--gold);}
+.r2{color:#C0C0C0;}
+.r3{color:#CD7F32;}
+.r4{color:var(--dim);}
+.rinfo{flex:1;}
+.rteam{font-size:15px;font-weight:900;color:var(--white);margin-bottom:2px;}
+.rdet{font-size:11px;color:var(--muted);}
+.rpct{font-family:'Bebas Neue',sans-serif;font-size:26px;}
+.r1card{border-color:rgba(255,215,0,.3);background:linear-gradient(135deg,#0E0C00,#0A0800);}
+
+/* 요약 */
+.asum{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;}
+.asi .asnum{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);line-height:1;}
+.asi .aslabel{font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:2px;}
+
+/* 토스트 */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:11px 22px;border-radius:100px;font-size:13px;font-weight:700;transition:transform .3s;z-index:999;pointer-events:none;white-space:nowrap;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+#toast.err{background:var(--red);}
+
+.loading{text-align:center;padding:36px;color:var(--dim);font-size:13px;}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid var(--dim);border-top-color:var(--red);border-radius:50%;animation:sp .8s linear infinite;margin-right:8px;vertical-align:middle;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.empty{text-align:center;padding:32px;color:var(--dim);font-size:13px;line-height:1.8;}
+</style>
+</head>
+<body>
+
+<!-- API 설정 -->
+<div id="api-banner">
+  <label>🔗 API URL</label>
+  <input id="api-input" type="text" placeholder="Apps Script 배포 URL 붙여넣기">
+  <button id="save-api" onclick="saveApi()">저장</button>
+  <span id="api-ok"></span>
+</div>
+
+<!-- 네비 -->
+<nav>
+  <div class="logo">🔥 <span>이웃집</span>챌린지</div>
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('attend',this)">출석</button>
+    <button class="tab" onclick="showTab('mission',this)">미션</button>
+    <button class="tab" onclick="showTab('board',this)">현황판</button>
+    <button class="tab" onclick="showTab('rank',this)">순위</button>
+  </div>
+</nav>
+
+<!-- ═══ 출석 ═══ -->
+<div class="sec on" id="sec-attend">
+  <div class="sec-title">출석 체크</div>
+  <p class="sec-sub">팀과 이름을 선택하고 오늘 출석을 체크하세요.</p>
+
+  <span class="stag">STEP 1 — 팀 선택</span>
+  <div class="tgrid" id="at-team">
+    <button class="tbtn jh" onclick="selTeam('준혁','at')"><div class="tc">준혁 코치</div><div class="tn">🦴 이웃집 빼빼로</div><div class="tm">백스쿼트 110% · 팀 3,500개</div></button>
+    <button class="tbtn jj" onclick="selTeam('중현','at')"><div class="tc">중현 코치</div><div class="tn">🏠 이웃집 통통이</div><div class="tm">달리기 · 팀 100km</div></button>
+    <button class="tbtn gh" onclick="selTeam('강희','at')"><div class="tc">강희 코치</div><div class="tn">🏠 이웃집 통통이</div><div class="tm">달리기 · 팀 143km</div></button>
+    <button class="tbtn dh" onclick="selTeam('도형','at')"><div class="tc">도형 코치</div><div class="tn">🏠 이웃집 통통이</div><div class="tm">달리기 · 팀 129km</div></button>
+  </div>
+
+  <div id="at-name-wrap" style="display:none">
+    <span class="stag">STEP 2 — 이름 선택</span>
+    <div class="ngrid" id="at-names"></div>
+  </div>
+
+  <div id="at-check-wrap" style="display:none">
+    <span class="stag">STEP 3 — 출석 체크</span>
+    <div class="card">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.7;">운동한 날 클릭하세요. 주 3회=5점 / 2회=3점 / 1회=1점</div>
+      <div class="wgrid" id="wgrid"></div>
+      <div class="asum">
+        <div class="asi"><div class="asnum" id="at-cnt">0</div><div class="aslabel">이번 주 출석</div></div>
+        <div class="asi"><div class="asnum" id="at-score">0</div><div class="aslabel">이번 주 점수</div></div>
+      </div>
+    </div>
+    <button class="sbtn green" style="width:100%;margin-top:4px" onclick="submitAttend()">✅ 출석 저장하기</button>
+  </div>
+</div>
+
+<!-- ═══ 미션 ═══ -->
+<div class="sec" id="sec-mission">
+  <div class="sec-title">미션 인증</div>
+  <p class="sec-sub">WEEK 1 — 팀 합산으로 목표를 채워요. 팀원이 대신 더 해줄 수 있어요!</p>
+
+  <div class="card" style="background:linear-gradient(135deg,#130404,#0E0303);border-color:rgba(255,45,45,.2);margin-bottom:18px">
+    <span class="stag" style="color:var(--red)">WEEK 1 미션 규칙</span>
+    <div style="font-size:13px;color:var(--muted);line-height:2.1;">
+      🏠 <b style="color:var(--white)">통통이팀</b> — 실외 달리기 (GPS 캡처 필수)<br>
+      🦴 <b style="color:var(--white)">빼빼로팀</b> — 백스쿼트 자기 체중의 110% (사진/영상 필수)<br>
+      🤝 내가 못 하면 <b style="color:var(--gold)">팀원이 대신 더 채울 수 있어요!</b><br>
+      📅 마감: <b style="color:var(--gold)">4/28(화)</b>
+    </div>
+  </div>
+
+  <span class="stag">팀 선택</span>
+  <div class="tgrid" id="mi-team">
+    <button class="tbtn jh" onclick="selTeam('준혁','mi')"><div class="tc">준혁 코치</div><div class="tn">🦴 빼빼로</div><div class="tm">백스쿼트 · 팀 3,500개</div></button>
+    <button class="tbtn jj" onclick="selTeam('중현','mi')"><div class="tc">중현 코치</div><div class="tn">🏠 통통이</div><div class="tm">달리기 · 팀 100km</div></button>
+    <button class="tbtn gh" onclick="selTeam('강희','mi')"><div class="tc">강희 코치</div><div class="tn">🏠 통통이</div><div class="tm">달리기 · 팀 143km</div></button>
+    <button class="tbtn dh" onclick="selTeam('도형','mi')"><div class="tc">도형 코치</div><div class="tn">🏠 통통이</div><div class="tm">달리기 · 팀 129km</div></button>
+  </div>
+
+  <div id="mi-name-wrap" style="display:none">
+    <span class="stag">이름 선택</span>
+    <div class="ngrid" id="mi-names"></div>
+  </div>
+
+  <div id="mi-input-wrap" style="display:none">
+    <span class="stag">미션 기록</span>
+    <div class="minput">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px;" id="mi-hint"></div>
+      <div class="irow">
+        <input type="number" id="mi-val" placeholder="0" min="0" step="0.1">
+        <span class="iunit" id="mi-unit">km</span>
+        <button class="sbtn" onclick="submitMission()">기록 추가</button>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:11px;letter-spacing:2px;color:var(--dim);margin-bottom:12px;">내 누적 기록</div>
+      <div class="prow">
+        <div class="plabel"><span class="pn" id="my-lbl">나</span><span class="pv" id="my-val">0</span></div>
+        <div class="pbar"><div class="pfill pf-red" id="my-bar" style="width:0%"></div></div>
+      </div>
+      <div style="font-size:11px;letter-spacing:2px;color:var(--dim);margin:14px 0 12px;">팀 합산 현황</div>
+      <div class="prow">
+        <div class="plabel"><span class="pn" id="team-lbl">팀 합산</span><span class="pv" id="team-val">0 / 0</span></div>
+        <div class="pbar"><div class="pfill" id="team-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 현황판 ═══ -->
+<div class="sec" id="sec-board">
+  <div class="sec-title">팀 현황판</div>
+  <p class="sec-sub">실시간 미션 진행 현황이에요.</p>
+  <button class="sbtn" style="margin-bottom:18px" onclick="loadBoard()">🔄 새로고침</button>
+  <div id="board-wrap"><div class="empty">새로고침을 눌러 불러오세요.</div></div>
+</div>
+
+<!-- ═══ 순위 ═══ -->
+<div class="sec" id="sec-rank">
+  <div class="sec-title">팀 순위</div>
+  <p class="sec-sub">미션 달성률 기준 실시간 순위예요.</p>
+  <button class="sbtn" style="margin-bottom:18px" onclick="loadRank()">🔄 새로고침</button>
+  <div id="rank-wrap"><div class="empty">새로고침을 눌러 불러오세요.</div></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════
+// 설정
+// ═══════════════════════════════════════
+const TEAMS = {
+  '준혁': {color:'#2D6FFF',cls:'jh',pfcls:'pf-blue',mission:'squat',unit:'개',goal:3500,members:['석장원','양희웅','기도윤','김영기','안정연','김현진','김범석']},
+  '중현': {color:'#FF6B00',cls:'jj',pfcls:'pf-orange',mission:'run',unit:'km',goal:100,members:['오상엽','최용준','정진안','윤정현','장지우','마리아','이채영']},
+  '강희': {color:'#FF2D2D',cls:'gh',pfcls:'pf-red',mission:'run',unit:'km',goal:143,members:['이예림','이별님','권세진','박성원','유상현','신혜주','형재희','구본석','김명수','신준희']},
+  '도형': {color:'#4CAF50',cls:'dh',pfcls:'pf-green',mission:'run',unit:'km',goal:129,members:['송영경','형재원','박준환','유성열','권재욱','이수빈','노정연','황재용','이일용']}
+};
+
+const WEEK = [
+  {l:'수',d:'4/22'},{l:'목',d:'4/23'},{l:'금',d:'4/24'},
+  {l:'토',d:'4/25'},{l:'일',d:'4/26'},{l:'월',d:'4/27'},{l:'화',d:'4/28'}
+];
+
+let API = 'https://script.google.com/macros/s/AKfycbyv67bIjT0W7j33msNgUo-g5icYSjtBcSJreZ3u524BoPbPhkyilaBM58STwDr2rQIf/exec';
+let LD = JSON.parse(localStorage.getItem('c_data') || '{}');
+let atTeam=null, atName=null, atDays=[];
+let miTeam=null, miName=null;
+
+// ═══════════════════════════════════════
+// API 저장
+// ═══════════════════════════════════════
+function saveApi() {
+  API = document.getElementById('api-input').value.trim();
+  localStorage.setItem('c_api', API);
+  document.getElementById('api-ok').textContent = '✅ 저장됨';
+  setTimeout(()=>document.getElementById('api-ok').textContent='', 2000);
+}
+
+window.onload = () => {
+  document.getElementById('api-banner').style.display = 'none';
+  buildWGrid();
+  loadBoard();
+};
+
+// ═══════════════════════════════════════
+// 탭 전환
+// ═══════════════════════════════════════
+function showTab(id, btn) {
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('sec-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// ═══════════════════════════════════════
+// 팀/이름 선택
+// ═══════════════════════════════════════
+function selTeam(team, ctx) {
+  const t = TEAMS[team];
+  if (ctx === 'at') {
+    atTeam = team; atName = null; atDays = [];
+    document.querySelectorAll('#at-team .tbtn').forEach(b=>b.classList.remove('sel'));
+    event.currentTarget.classList.add('sel');
+    const nl = document.getElementById('at-names');
+    nl.className = 'ngrid ' + t.cls;
+    nl.innerHTML = t.members.map(n=>`<button class="nbtn" onclick="selName('${n}','at')">${n}</button>`).join('');
+    document.getElementById('at-name-wrap').style.display = 'block';
+    document.getElementById('at-check-wrap').style.display = 'none';
+  } else {
+    miTeam = team; miName = null;
+    document.querySelectorAll('#mi-team .tbtn').forEach(b=>b.classList.remove('sel'));
+    event.currentTarget.classList.add('sel');
+    const nl = document.getElementById('mi-names');
+    nl.className = 'ngrid ' + t.cls;
+    nl.innerHTML = t.members.map(n=>`<button class="nbtn" onclick="selName('${n}','mi')">${n}</button>`).join('');
+    document.getElementById('mi-name-wrap').style.display = 'block';
+    document.getElementById('mi-input-wrap').style.display = 'none';
+  }
+}
+
+function selName(name, ctx) {
+  if (ctx === 'at') {
+    atName = name;
+    document.querySelectorAll('#at-names .nbtn').forEach(b=>b.classList.remove('sel'));
+    event.currentTarget.classList.add('sel');
+    const key = atTeam+'_'+name+'_attend';
+    atDays = LD[key] || [];
+    updateWGrid();
+    document.getElementById('at-check-wrap').style.display = 'block';
+  } else {
+    miName = name;
+    document.querySelectorAll('#mi-names .nbtn').forEach(b=>b.classList.remove('sel'));
+    event.currentTarget.classList.add('sel');
+    const t = TEAMS[miTeam];
+    const isS = t.mission === 'squat';
+    document.getElementById('mi-hint').innerHTML = `<b style="color:var(--white)">${name}</b>의 ${isS ? '스쿼트 개수' : '달리기 거리'}를 입력하세요.`;
+    document.getElementById('mi-unit').textContent = isS ? '개' : 'km';
+    document.getElementById('mi-input-wrap').style.display = 'block';
+    updateMiProgress();
+  }
+}
+
+// ═══════════════════════════════════════
+// 출석 달력
+// ═══════════════════════════════════════
+function buildWGrid() {
+  document.getElementById('wgrid').innerHTML = WEEK.map((d,i)=>
+    `<button class="dbtn" id="d${i}" onclick="togDay(${i})">
+      <span class="dl">${d.l}</span><span class="dd">${d.d}</span>
+    </button>`
+  ).join('');
+}
+
+function togDay(i) {
+  const idx = atDays.indexOf(i);
+  if (idx>=0) atDays.splice(idx,1); else atDays.push(i);
+  updateWGrid();
+}
+
+function updateWGrid() {
+  WEEK.forEach((_,i)=>{
+    const b = document.getElementById('d'+i);
+    if (b) b.classList.toggle('chk', atDays.includes(i));
+  });
+  const c = atDays.length;
+  const s = c>=3?5:c===2?3:c===1?1:0;
+  document.getElementById('at-cnt').textContent = c;
+  document.getElementById('at-score').textContent = s;
+}
+
+async function submitAttend() {
+  if (!atTeam||!atName) { toast('팀과 이름을 선택하세요',1); return; }
+  const key = atTeam+'_'+atName+'_attend';
+  LD[key] = [...atDays];
+  saveLoc();
+  const c = atDays.length;
+  const s = c>=3?5:c===2?3:c===1?1:0;
+  await send({type:'attend',team:atTeam,name:atName,data:atDays.join(',')+'|count:'+c+'|score:'+s});
+  toast(`✅ ${atName} 출석 저장! (${c}회 / ${s}점)`);
+}
+
+// ═══════════════════════════════════════
+// 미션
+// ═══════════════════════════════════════
+function updateMiProgress() {
+  if (!miTeam||!miName) return;
+  const t = TEAMS[miTeam];
+  const key = miTeam+'_'+miName+'_mission';
+  const my = LD[key]||0;
+  const myPer = Math.min(100,(my/(t.goal/t.members.length))*100);
+  document.getElementById('my-lbl').textContent = miName+' 누적';
+  document.getElementById('my-val').textContent = my+' '+t.unit;
+  document.getElementById('my-bar').style.width = myPer+'%';
+  const teamTot = t.members.reduce((s,m)=>s+(LD[miTeam+'_'+m+'_mission']||0),0);
+  const teamPer = Math.min(100,(teamTot/t.goal)*100);
+  document.getElementById('team-lbl').textContent = '팀 합산';
+  document.getElementById('team-val').textContent = teamTot+' / '+t.goal+' '+t.unit;
+  const tb = document.getElementById('team-bar');
+  tb.style.width = teamPer+'%';
+  tb.className = 'pfill '+t.pfcls;
+}
+
+async function submitMission() {
+  if (!miTeam||!miName) { toast('팀과 이름을 선택하세요',1); return; }
+  const v = parseFloat(document.getElementById('mi-val').value);
+  if (!v||v<=0) { toast('올바른 값을 입력하세요',1); return; }
+  const t = TEAMS[miTeam];
+  const key = miTeam+'_'+miName+'_mission';
+  LD[key] = (LD[key]||0) + v;
+  saveLoc();
+  document.getElementById('mi-val').value = '';
+  await send({type:'mission',team:miTeam,name:miName,data:v+' '+t.unit});
+  toast(`✅ ${miName} +${v}${t.unit} 기록!`);
+  updateMiProgress();
+}
+
+// ═══════════════════════════════════════
+// 현황판
+// ═══════════════════════════════════════
+async function loadBoard() {
+  const el = document.getElementById('board-wrap');
+  el.innerHTML = '<div class="loading"><span class="spin"></span>불러오는 중...</div>';
+  const data = await fetchData();
+  el.innerHTML = Object.entries(TEAMS).map(([coach,t])=>{
+    const tot = t.members.reduce((s,m)=>s+(getData(data,coach,m,'mission')),0);
+    const pct = Math.min(100,(tot/t.goal)*100).toFixed(1);
+    const mbars = t.members.map(m=>{
+      const mv = getData(data,coach,m,'mission');
+      const mp = Math.min(100,(mv/(t.goal/t.members.length))*100);
+      return `<div class="mrow">
+        <span class="mname">${m}</span>
+        <div class="mbar"><div class="pfill ${t.pfcls}" style="width:${mp}%;height:100%;border-radius:100px;"></div></div>
+        <span class="mval">${mv} ${t.unit}</span>
+      </div>`;
+    }).join('');
+    return `<div class="bcard ${t.cls}">
+      <div class="bhdr">
+        <div class="bcl"><div class="bcoach">${coach} 코치 · ${t.members.length}명</div><div class="bname">${t.mission==='squat'?'🦴 빼빼로':'🏠 통통이'}</div></div>
+        <div class="bcr"><div class="btotal">${pct}%</div><div class="bsub">${tot} / ${t.goal} ${t.unit}</div></div>
+      </div>
+      <div class="prow"><div class="pbar" style="height:10px"><div class="pfill ${t.pfcls}" style="width:${pct}%"></div></div></div>
+      <div class="mrows">${mbars}</div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════
+// 순위
+// ═══════════════════════════════════════
+async function loadRank() {
+  const el = document.getElementById('rank-wrap');
+  el.innerHTML = '<div class="loading"><span class="spin"></span>계산 중...</div>';
+  const data = await fetchData();
+  const ranks = Object.entries(TEAMS).map(([coach,t])=>{
+    const tot = t.members.reduce((s,m)=>s+getData(data,coach,m,'mission'),0);
+    return {coach,t,tot,pct:(tot/t.goal)*100};
+  }).sort((a,b)=>b.pct-a.pct);
+  const medals=['🥇','🥈','🥉','4️⃣'];
+  el.innerHTML = ranks.map((r,i)=>`
+    <div class="rcard ${i===0?'r1card':''}">
+      <div class="rnum r${i+1}">${medals[i]}</div>
+      <div class="rinfo">
+        <div class="rteam">${r.t.mission==='squat'?'🦴 빼빼로':'🏠 통통이'} — ${r.coach} 코치</div>
+        <div class="rdet">${r.tot} / ${r.t.goal} ${r.t.unit} · ${r.t.members.length}명</div>
+      </div>
+      <div class="rpct" style="color:${r.t.color}">${r.pct.toFixed(1)}%</div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════
+// 데이터 전송 (Image GET = CORS 완전 우회, 안정적)
+// ═══════════════════════════════════════
+function send(payload) {
+  return new Promise((resolve) => {
+    if (!API) { resolve(); return; }
+    const params = new URLSearchParams();
+    Object.entries(payload).forEach(([k, v]) => params.append(k, String(v)));
+    const img = new Image();
+    img.onload = img.onerror = () => resolve();
+    img.src = API + '?' + params.toString();
+    setTimeout(resolve, 5000);
+  });
+}
+
+// ═══════════════════════════════════════
+// 데이터 조회
+// ═══════════════════════════════════════
+async function fetchData() {
+  let remote = {};
+  if (!API) return remote;
+  try {
+    const res = await fetch(API);
+    const raw = await res.json();
+    if (Array.isArray(raw)) {
+      raw.forEach(row => {
+        // Apps Script returns [team, name, type, value]
+        const team = row[0], name = row[1], type = row[2], val = row[3];
+        if (!team || !name || !type) return;
+        const key = team+'_'+name+'_'+type;
+        if (type === 'mission') remote[key] = (remote[key]||0) + (parseFloat(val)||0);
+        else remote[key] = val;
+      });
+    }
+  } catch(e) {}
+  return remote;
+}
+
+function getData(remote, team, name, type) {
+  const key = team+'_'+name+'_'+type;
+  return (remote[key]||0) + (LD[key]||0);
+}
+
+function saveLoc() {
+  localStorage.setItem('c_data', JSON.stringify(LD));
+}
+
+function toast(msg, isErr=0) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = isErr ? 'err show' : 'show';
+  setTimeout(()=>t.className='', 3000);
+}
+</script>
+</body>
+</html>
