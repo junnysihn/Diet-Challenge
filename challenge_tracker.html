@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 6주 다이어트 챌린지</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080808;--bg2:#101010;--bg3:#181818;--white:#F0EDE6;--muted:#999;--dim:#555;--red:#FF2D2D;--orange:#FF6B00;--gold:#FFD700;--green:#4CAF50;--blue:#2D6FFF;--purple:#9C27B0;--border:#1E1E1E;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--white);font-family:'Noto Sans KR',sans-serif;-webkit-font-smoothing:antialiased;}
+nav{position:sticky;top:0;z-index:100;background:rgba(8,8,8,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 18px;display:flex;justify-content:space-between;align-items:center;}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;}
+.logo span{color:var(--red);}
+.tabs{display:flex;gap:3px;}
+.tab{padding:6px 12px;border-radius:100px;font-size:11px;font-weight:700;border:none;cursor:pointer;background:transparent;color:var(--dim);transition:all .2s;}
+.tab.on{background:var(--red);color:#fff;}
+.sec{display:none;max-width:860px;margin:0 auto;padding:20px 16px;}
+.sec.on{display:block;}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(26px,6vw,48px);letter-spacing:2px;margin-bottom:4px;}
+.sec-sub{font-size:12px;color:var(--muted);margin-bottom:20px;line-height:1.7;}
+.stag{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:8px;display:block;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+
+/* 팀 버튼 */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+@media(max-width:480px){.tgrid{grid-template-columns:1fr;}}
+.tbtn{border-radius:12px;padding:14px;text-align:left;border:1px solid var(--border);background:var(--bg3);cursor:pointer;transition:all .2s;}
+.tbtn.jh.sel{background:rgba(45,111,255,.1);border-color:var(--blue);}
+.tbtn.jj.sel{background:rgba(255,107,0,.1);border-color:var(--orange);}
+.tbtn.gh.sel{background:rgba(255,45,45,.1);border-color:var(--red);}
+.tbtn.dh.sel{background:rgba(76,175,80,.1);border-color:var(--green);}
+.tc{font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:4px;}
+.tbtn.jh .tc{color:var(--blue);}
+.tbtn.jj .tc{color:var(--orange);}
+.tbtn.gh .tc{color:var(--red);}
+.tbtn.dh .tc{color:var(--green);}
+.tn{font-size:16px;font-weight:900;color:var(--white);line-height:1.2;margin-bottom:2px;}
+.tm{font-size:11px;color:var(--muted);}
+
+/* 이름 */
+.ngrid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.nbtn{padding:7px 14px;border-radius:100px;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;}
+.nbtn.sel{font-weight:700;color:var(--white);}
+.jh .nbtn.sel{background:rgba(45,111,255,.15);border-color:var(--blue);}
+.jj .nbtn.sel{background:rgba(255,107,0,.15);border-color:var(--orange);}
+.gh .nbtn.sel{background:rgba(255,45,45,.15);border-color:var(--red);}
+.dh .nbtn.sel{background:rgba(76,175,80,.15);border-color:var(--green);}
+
+/* 주차 버튼 */
+.wsels{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
+.wbtn{padding:6px 14px;border-radius:100px;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;}
+.wbtn.on{background:var(--red);border-color:var(--red);color:#fff;}
+.wbtn.done{border-color:var(--green);color:var(--green);}
+
+/* 달력 */
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:12px;}
+@media(max-width:400px){.wgrid{grid-template-columns:repeat(4,1fr);}}
+.dbtn{aspect-ratio:1;border-radius:9px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .15s;}
+.dbtn .dl{font-size:9px;color:var(--dim);letter-spacing:1px;}
+.dbtn .dd{font-size:12px;font-weight:700;color:var(--muted);}
+.dbtn.chk{border-color:var(--green);background:rgba(76,175,80,.1);}
+.dbtn.chk .dd,.dbtn.chk .dl{color:var(--green);}
+.dbtn.today{border-color:var(--gold);}
+.dbtn.today .dd{color:var(--gold);}
+
+/* 토글 버튼 */
+.toggle-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;}
+.tbtn2{padding:8px 16px;border-radius:9px;border:1px solid var(--border);background:var(--bg3);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+.tbtn2.on{background:rgba(76,175,80,.15);border-color:var(--green);color:var(--green);}
+.tbtn2.on2{background:rgba(156,39,176,.15);border-color:var(--purple);color:var(--purple);}
+
+/* 미션 입력 */
+.irow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.irow input{flex:1;min-width:90px;background:#111;border:1px solid var(--border);color:var(--white);padding:9px 12px;border-radius:9px;font-size:15px;font-weight:700;font-family:'Noto Sans KR',sans-serif;}
+.irow input:focus{outline:none;border-color:var(--red);}
+.iunit{font-size:12px;color:var(--muted);white-space:nowrap;}
+.sbtn{border:none;padding:9px 20px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s;color:#fff;}
+.sbtn.red{background:var(--red);}
+.sbtn.green{background:var(--green);}
+.sbtn.orange{background:var(--orange);}
+.sbtn.purple{background:var(--purple);}
+.sbtn:hover{opacity:.85;}
+.sbtn.full{width:100%;margin-top:4px;}
+
+/* 진행바 */
+.prow{margin-bottom:8px;}
+.plabel{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;}
+.plabel .pn{color:var(--muted);}
+.plabel .pv{font-weight:700;color:var(--white);}
+.pbar{height:7px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+.pfill{height:100%;border-radius:100px;transition:width .5s ease;}
+.pf-red{background:var(--red);}
+.pf-orange{background:var(--orange);}
+.pf-green{background:var(--green);}
+.pf-blue{background:var(--blue);}
+
+/* 현황판 카드 */
+.bcard{border-radius:14px;padding:18px;margin-bottom:10px;border:1px solid var(--border);}
+.bcard.jh{background:linear-gradient(135deg,#060910,#040608);}
+.bcard.jj{background:linear-gradient(135deg,#0E0700,#090500);}
+.bcard.gh{background:linear-gradient(135deg,#0E0303,#090202);}
+.bcard.dh{background:linear-gradient(135deg,#050E05,#030903);}
+.bhdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+.bc-coach{font-size:10px;font-weight:700;letter-spacing:3px;margin-bottom:3px;}
+.bcard.jh .bc-coach{color:var(--blue);}
+.bcard.jj .bc-coach{color:var(--orange);}
+.bcard.gh .bc-coach{color:var(--red);}
+.bcard.dh .bc-coach{color:var(--green);}
+.bc-name{font-size:17px;font-weight:900;color:var(--white);}
+.bc-total{font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1;text-align:right;}
+.bc-sub{font-size:10px;color:var(--muted);text-align:right;}
+.bcard.jh .bc-total{color:var(--blue);}
+.bcard.jj .bc-total{color:var(--orange);}
+.bcard.gh .bc-total{color:var(--red);}
+.bcard.dh .bc-total{color:var(--green);}
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0;}
+.sg-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center;}
+.sg-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;}
+.sg-label{font-size:9px;color:var(--dim);letter-spacing:1px;margin-top:2px;}
+.notice-box{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--muted);line-height:1.7;}
+.mrows{display:flex;flex-direction:column;gap:6px;}
+.mrow{display:flex;align-items:center;gap:7px;}
+.mname{font-size:11px;color:var(--muted);width:52px;flex-shrink:0;text-align:right;}
+.mbar{flex:1;height:5px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+.mval{font-size:10px;color:var(--muted);width:50px;text-align:right;flex-shrink:0;}
+.mscore{font-size:10px;color:var(--gold);width:32px;text-align:right;flex-shrink:0;}
+
+/* 순위 */
+.rcard{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;}
+.rnum{font-family:'Bebas Neue',sans-serif;font-size:28px;width:32px;flex-shrink:0;}
+.r1{color:var(--gold);}
+.r2{color:#C0C0C0;}
+.r3{color:#CD7F32;}
+.r4{color:var(--dim);}
+.rinfo{flex:1;}
+.rteam{font-size:14px;font-weight:900;color:var(--white);margin-bottom:2px;}
+.rdet{font-size:10px;color:var(--muted);}
+.rpct{font-family:'Bebas Neue',sans-serif;font-size:24px;}
+.r1card{border-color:rgba(255,215,0,.3);background:linear-gradient(135deg,#0E0C00,#0A0800);}
+
+/* 누적 점수 요약 */
+.asum{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;}
+.asi .asnum{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--white);line-height:1;}
+.asi .aslabel{font-size:9px;color:var(--muted);letter-spacing:1px;margin-top:2px;}
+
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;padding:10px 20px;border-radius:100px;font-size:12px;font-weight:700;transition:transform .3s;z-index:999;pointer-events:none;white-space:nowrap;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+#toast.err{background:var(--red);}
+.loading{text-align:center;padding:30px;color:var(--dim);font-size:13px;}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid var(--dim);border-top-color:var(--red);border-radius:50%;animation:sp .8s linear infinite;margin-right:8px;vertical-align:middle;}
+@keyframes sp{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">🔥 <span>이웃집</span>챌린지</div>
+  <div class="tabs">
+    <button class="tab on" onclick="showTab('attend',this)">출석</button>
+    <button class="tab" onclick="showTab('mission',this)">미션</button>
+    <button class="tab" onclick="showTab('extra',this)">야외운동</button>
+    <button class="tab" onclick="showTab('board',this)">현황판</button>
+    <button class="tab" onclick="showTab('rank',this)">순위</button>
+  </div>
+</nav>
+
+<!-- ═══ 출석 ═══ -->
+<div class="sec on" id="sec-attend">
+  <div class="sec-title">출석 체크</div>
+  <p class="sec-sub">운동한 날 체크하세요. 주 3회=5점 / 2회=3점 / 1회=1점</p>
+  <span class="stag">팀 선택</span>
+  <div class="tgrid" id="at-team">
+    <button class="tbtn jh" onclick="selTeam('준혁','at')"><div class="tc">준혁 코치</div><div class="tn">🦴 빼빼로</div><div class="tm">백스쿼트 110%</div></button>
+    <button class="tbtn jj" onclick="selTeam('중현','at')"><div class="tc">중현 코치</div><div class="tn">🏠 통통이</div><div class="tm">달리기 100km</div></button>
+    <button class="tbtn gh" onclick="selTeam('강희','at')"><div class="tc">강희 코치</div><div class="tn">🏠 통통이</div><div class="tm">달리기 143km</div></button>
+    <button class="tbtn dh" onclick="selTeam('도형','at')"><div class="tc">도형 코치</div><div class="tn">🏠 통통이</div><div class="tm">달리기 143km</div></button>
+  </div>
+  <div id="at-name-wrap" style="display:none">
+    <span class="stag">이름 선택</span>
+    <div class="ngrid" id="at-names"></div>
+  </div>
+  <div id="at-check-wrap" style="display:none">
+    <span class="stag">주차 선택</span>
+    <div class="wsels" id="at-weeks"></div>
+    <span class="stag">출석 체크</span>
+    <div class="card">
+      <div class="wgrid" id="wgrid"></div>
+      <div class="asum">
+        <div class="asi"><div class="asnum" id="at-cnt">0</div><div class="aslabel">이번 주 출석</div></div>
+        <div class="asi"><div class="asnum" id="at-wscore">0</div><div class="aslabel">이번 주 점수</div></div>
+        <div class="asi"><div class="asnum" id="at-tscore">0</div><div class="aslabel">출석 누적점수</div></div>
+      </div>
+    </div>
+    <button class="sbtn green full" onclick="submitAttend()">✅ 출석 저장</button>
+  </div>
+</div>
+
+<!-- ═══ 미션 ═══ -->
+<div class="sec" id="sec-mission">
+  <div class="sec-title">미션 인증</div>
+  <p class="sec-sub">달리기(km) 또는 스쿼트(개) 기록. 팀원이 대신 채울 수 있어요!</p>
+  <span class="stag">팀 선택</span>
+  <div class="tgrid" id="mi-team">
+    <button class="tbtn jh" onclick="selTeam('준혁','mi')"><div class="tc">준혁 코치</div><div class="tn">🦴 빼빼로</div><div class="tm">팀 1,800개</div></button>
+    <button class="tbtn jj" onclick="selTeam('중현','mi')"><div class="tc">중현 코치</div><div class="tn">🏠 통통이</div><div class="tm">팀 100km</div></button>
+    <button class="tbtn gh" onclick="selTeam('강희','mi')"><div class="tc">강희 코치</div><div class="tn">🏠 통통이</div><div class="tm">팀 143km</div></button>
+    <button class="tbtn dh" onclick="selTeam('도형','mi')"><div class="tc">도형 코치</div><div class="tn">🏠 통통이</div><div class="tm">팀 143km</div></button>
+  </div>
+  <div id="mi-name-wrap" style="display:none">
+    <span class="stag">이름 선택</span>
+    <div class="ngrid" id="mi-names"></div>
+  </div>
+  <div id="mi-week-wrap" style="display:none">
+    <span class="stag">주차 선택</span>
+    <div class="wsels" id="mi-weeks"></div>
+    <div id="mi-mission-desc" class="card" style="margin-bottom:12px"></div>
+  </div>
+  <div id="mi-input-wrap" style="display:none">
+    <div class="card">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;" id="mi-hint"></div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <button class="wbtn on" id="mode-add" onclick="setMode('add')">➕ 추가</button>
+        <button class="wbtn" id="mode-fix" onclick="setMode('fix')">✏️ 수정/삭제</button>
+      </div>
+      <div style="font-size:11px;color:var(--dim);margin-bottom:10px;" id="mode-hint">운동한 만큼 입력하면 누적됩니다</div>
+      <div class="irow">
+        <input type="number" id="mi-val" placeholder="0" min="0" step="0.1">
+        <span class="iunit" id="mi-unit">km</span>
+        <button class="sbtn red" id="mi-submit-btn" onclick="submitMission()">기록 추가</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="prow">
+        <div class="plabel"><span class="pn" id="my-lbl">내 누적</span><span class="pv" id="my-val">0</span></div>
+        <div class="pbar"><div class="pfill pf-red" id="my-bar" style="width:0%"></div></div>
+      </div>
+      <div class="prow" style="margin-top:10px">
+        <div class="plabel"><span class="pn" id="team-lbl">팀 합산</span><span class="pv" id="team-val">0/0</span></div>
+        <div class="pbar"><div class="pfill" id="team-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 야외운동 ═══ -->
+<div class="sec" id="sec-extra">
+  <div class="sec-title">야외운동</div>
+  <p class="sec-sub">4회 진행 · 최대 3회 인정 · 최대 15점 · 개인 점수에만 반영</p>
+  <span class="stag">팀 선택</span>
+  <div class="tgrid" id="ex-team">
+    <button class="tbtn jh" onclick="selTeam('준혁','ex')"><div class="tc">준혁 코치</div><div class="tn">🦴 빼빼로</div></button>
+    <button class="tbtn jj" onclick="selTeam('중현','ex')"><div class="tc">중현 코치</div><div class="tn">🏠 통통이</div></button>
+    <button class="tbtn gh" onclick="selTeam('강희','ex')"><div class="tc">강희 코치</div><div class="tn">🏠 통통이</div></button>
+    <button class="tbtn dh" onclick="selTeam('도형','ex')"><div class="tc">도형 코치</div><div class="tn">🏠 통통이</div></button>
+  </div>
+  <div id="ex-name-wrap" style="display:none">
+    <span class="stag">이름 선택</span>
+    <div class="ngrid" id="ex-names"></div>
+  </div>
+  <div id="ex-wrap" style="display:none">
+    <span class="stag">🏔️ 야외운동 (4회 진행 · 최대 3회 인정 · 최대 15점)</span>
+    <div class="card">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">4회 진행 · 최대 3회 인정 · 최대 15점 · 개인 점수에만 반영</div>
+      <div class="toggle-row">
+        <button class="tbtn2" id="out1-btn" onclick="toggleOut(1)">❌ 1회차 4/26 강희코치</button>
+        <button class="tbtn2" id="out2-btn" onclick="toggleOut(2)">❌ 2회차 5/3 준혁코치</button>
+        <button class="tbtn2" id="out3-btn" onclick="toggleOut(3)">❌ 3회차 5/10 중현코치</button>
+        <button class="tbtn2" id="out4-btn" onclick="toggleOut(4)">❌ 4회차 5/25 도형코치</button>
+      </div>
+      <div style="font-size:11px;color:var(--dim)" id="out-score">야외운동 점수: 0점 (개인 점수만 반영)</div>
+    </div>
+    <button class="sbtn purple full" onclick="submitOutdoor()">✅ 야외운동 저장</button>
+
+
+  </div>
+</div>
+
+<!-- ═══ 현황판 ═══ -->
+<div class="sec" id="sec-board">
+  <div class="sec-title">팀 현황판</div>
+  <p class="sec-sub">팀 순위 기준 — 출석 + 미션완료 점수 (야외운동 제외)</p>
+  <button class="sbtn red" style="margin-bottom:16px" onclick="loadBoard()">🔄 새로고침</button>
+  <div id="board-wrap"><div class="loading"><span class="spin"></span>불러오는 중...</div></div>
+</div>
+
+<!-- ═══ 순위 ═══ -->
+<div class="sec" id="sec-rank">
+  <div class="sec-title">순위</div>
+  <p class="sec-sub">팀 순위는 출석+미션 기준 · 개인 순위는 출석+미션+야외운동 기준</p>
+  <button class="sbtn red" style="margin-bottom:16px" onclick="loadRank()">🔄 새로고침</button>
+
+  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--dim);margin-bottom:10px;">🏆 팀 순위 (출석 + 미션완료)</div>
+  <div id="rank-team-wrap"></div>
+
+  <div style="font-size:11px;font-weight:700;letter-spacing:2px;color:var(--dim);margin:20px 0 10px;">👤 개인 순위 (출석 + 미션완료 + 야외운동)</div>
+  <div id="rank-personal-wrap"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbw0dqFQKWHFOPGg1ng5D-7IkGoNm2IeogAuDxzL4tm1iqF3GeA8B8ww-gnN2EVXukeW/exec';
+const START = new Date(2026,3,22);
+const WEEKS = 6;
+
+const TEAMS = {
+  '준혁':{color:'#2D6FFF',cls:'jh',pf:'pf-blue',
+    members:['석장원','양희웅','기도윤','김영기','안정연','김현진','김범석']},
+  '중현':{color:'#FF6B00',cls:'jj',pf:'pf-orange',
+    members:['오상엽','최용준','정진안','윤정현','장지우','마리아','이채영']},
+  '강희':{color:'#FF2D2D',cls:'gh',pf:'pf-red',
+    members:['이예림','이별님','권세진','박성원','유상현','신혜주','형재희','구본석','김명수','신준희']},
+  '도형':{color:'#4CAF50',cls:'dh',pf:'pf-green',
+    members:['송영경','형재원','박준환','유성열','권재욱','이수빈','노정연','황재용','이일용','손다정']}
+};
+
+// 주차별 미션 설정 (매주 업데이트)
+const WEEK_MISSIONS = {
+  1: {
+    '준혁': {label:'백스쿼트 (체중 110%)', unit:'개', goal:1800, hint:'세트당 10개씩. 영상/사진 인증 필수! (김범석 부상으로 1주차 제외)'},
+    '중현': {label:'실외 달리기', unit:'km', goal:100, hint:'GPS 캡처 필수. 러닝머신 ❌'},
+    '강희': {label:'실외 달리기', unit:'km', goal:143, hint:'GPS 캡처 필수. 러닝머신 ❌'},
+    '도형': {label:'실외 달리기', unit:'km', goal:143, hint:'GPS 캡처 필수. 러닝머신 ❌'},
+  },
+  2: {
+    '준혁': {label:'싯업', unit:'개', goal:2800, hint:'1인당 400개. 각자 채우기! (팀원 대신 불가)'},
+    '중현': {label:'싯업', unit:'개', goal:2800, hint:'1인당 400개. 각자 채우기! (팀원 대신 불가)'},
+    '강희': {label:'싯업', unit:'개', goal:4000, hint:'1인당 400개. 각자 채우기! (팀원 대신 불가)'},
+    '도형': {label:'싯업', unit:'개', goal:4000, hint:'1인당 400개. 각자 채우기! (팀원 대신 불가)'},
+  },
+  3: null,
+  4: null,
+  5: null,
+  6: null,
+};
+
+let LD = JSON.parse(localStorage.getItem('c_data')||'{}');
+let atTeam=null,atName=null,atWeek=1,atDays=[];
+let miTeam=null,miName=null;
+let exTeam=null,exName=null;
+let out1=false,out2=false,out3=false,out4=false;
+
+function curWeek(){
+  const d=Math.floor((new Date()-START)/(7*24*60*60*1000));
+  return Math.min(Math.max(d+1,1),WEEKS);
+}
+
+function weekDates(wn){
+  const s=new Date(START); s.setDate(s.getDate()+(wn-1)*7);
+  const dn=['일','월','화','수','목','금','토'];
+  const max=wn===6?6:7;
+  return Array.from({length:max},(_,i)=>{
+    const d=new Date(s); d.setDate(d.getDate()+i);
+    return {l:dn[d.getDay()],d:`${d.getMonth()+1}/${d.getDate()}`,date:d};
+  });
+}
+
+function isToday(dt){
+  const t=new Date();
+  return dt.getFullYear()===t.getFullYear()&&dt.getMonth()===t.getMonth()&&dt.getDate()===t.getDate();
+}
+
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('sec-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='board') loadBoard();
+  if(id==='rank') loadRank();
+}
+
+// 팀/이름 선택
+function selTeam(team,ctx){
+  const t=TEAMS[team];
+  const mapping={at:['at-team','at-names','at-name-wrap','at-check-wrap'],mi:['mi-team','mi-names','mi-name-wrap','mi-input-wrap'],ex:['ex-team','ex-names','ex-name-wrap','ex-wrap']};
+  const [tg,ng,nw,cw]=mapping[ctx];
+  document.querySelectorAll(`#${tg} .tbtn`).forEach(b=>b.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+  if(ctx==='at'){atTeam=team;atName=null;atDays=[];}
+  else if(ctx==='mi'){miTeam=team;miName=null;}
+  else{exTeam=team;exName=null;}
+  const nl=document.getElementById(ng);
+  nl.className='ngrid '+t.cls;
+  nl.innerHTML=t.members.map(n=>`<button class="nbtn" onclick="selName('${n}','${ctx}')">${n}</button>`).join('');
+  document.getElementById(nw).style.display='block';
+  document.getElementById(cw).style.display='none';
+}
+
+function selName(name,ctx){
+  const mapping={at:'at-names',mi:'mi-names',ex:'ex-names'};
+  document.querySelectorAll(`#${mapping[ctx]} .nbtn`).forEach(b=>b.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+  if(ctx==='at'){
+    atName=name;
+    buildWeekBtns('at-weeks','at');
+    document.getElementById('at-check-wrap').style.display='block';
+    // 구글 시트에서 이 사람의 출석 데이터 직접 복원
+    loadUserAttend(atTeam, name);
+  } else if(ctx==='mi'){
+    miName=name;
+    buildMiWeekBtns();
+  } else {
+    exName=name;
+    loadExtraState();
+    document.getElementById('ex-wrap').style.display='block';
+  }
+}
+
+// 주차 버튼
+function buildWeekBtns(id,ctx){
+  const cw=curWeek();
+  if(ctx==='at') atWeek=cw;
+  const el=document.getElementById(id);
+  el.innerHTML=Array.from({length:WEEKS},(_,i)=>i+1).map(w=>{
+    let extra='';
+    if(ctx==='at'){
+      const k=`${atTeam}_${atName}_w${w}`;
+      if(LD[k]) extra=' done';
+    } else if(ctx==='ex'){
+      const k=`${exTeam}_${exName}_mdone`;
+      const saved=LD[k]||'';
+      if(saved.includes(`w${w}`)) extra=' done';
+    }
+    return `<button class="wbtn${w===cw?' on':''}${extra}" onclick="selWeek(${w},'${ctx}',this)">W${w}</button>`;
+  }).join('');
+  if(ctx==='at') buildCalendar();
+}
+
+function selWeek(w,ctx,btn){
+  if(ctx==='at'){
+    atWeek=w; atDays=[];
+    document.querySelectorAll('#at-weeks .wbtn').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const k=`${atTeam}_${atName}_w${w}`;
+    if(LD[k]){
+      const m=LD[k].match(/days:([\d,]*)/);
+      atDays=m&&m[1]?m[1].split(',').map(Number).filter(n=>!isNaN(n)):[];
+    }
+    buildCalendar();
+  } else {
+    // 미션완료 주차 토글
+    if(doneWeeks.has(w)) doneWeeks.delete(w); else doneWeeks.add(w);
+    btn.classList.toggle('on',doneWeeks.has(w));
+    document.getElementById('mission-done-score').textContent=`미션 완료 점수: ${doneWeeks.size*8}점`;
+  }
+}
+
+function buildCalendar(){
+  const dates=weekDates(atWeek);
+  document.getElementById('wgrid').innerHTML=dates.map((d,i)=>
+    `<button class="dbtn${atDays.includes(i)?' chk':''}${isToday(d.date)?' today':''}" onclick="togDay(${i})">
+      <span class="dl">${d.l}</span><span class="dd">${d.d}</span>
+    </button>`
+  ).join('');
+  updateAtScore();
+}
+
+function togDay(i){
+  const idx=atDays.indexOf(i);
+  if(idx>=0) atDays.splice(idx,1); else atDays.push(i);
+  buildCalendar();
+}
+
+function updateAtScore(){
+  const c=atDays.length;
+  const s=c>=3?5:c===2?3:c===1?1:0;
+  document.getElementById('at-cnt').textContent=c;
+  document.getElementById('at-wscore').textContent=s;
+  let tot=0;
+  for(let w=1;w<=WEEKS;w++){
+    const k=`${atTeam}_${atName}_w${w}`;
+    if(LD[k]){const m=LD[k].match(/score:(\d+)/);tot+=w===atWeek?s:(m?parseInt(m[1]):0);}
+    else if(w===atWeek) tot+=s;
+  }
+  document.getElementById('at-tscore').textContent=tot;
+}
+
+async function submitAttend(){
+  if(!atTeam||!atName){toast('팀과 이름을 선택하세요',1);return;}
+  const c=atDays.length,s=c>=3?5:c===2?3:c===1?1:0;
+  const str=`week:${atWeek}|days:${atDays.join(',')}|count:${c}|score:${s}`;
+  LD[`${atTeam}_${atName}_w${atWeek}`]=str; save();
+  await send({type:'attend',team:atTeam,name:atName,week:atWeek,data:str});
+  toast(`✅ ${atName} ${atWeek}주차 출석 저장! (${c}회/${s}점)`);
+  updateAtScore();
+  buildWeekBtns('at-weeks','at');
+}
+
+
+let miWeek = 1;
+
+function buildMiWeekBtns(){
+  const cw=curWeek(); miWeek=cw;
+  const el=document.getElementById('mi-weeks');
+  el.innerHTML=Array.from({length:WEEKS},(_,i)=>i+1).map(w=>{
+    const m=WEEK_MISSIONS[w]&&WEEK_MISSIONS[w][miTeam];
+    const done=LD[miTeam+'_'+miName+'_mission_w'+w]?'done':'';
+    return `<button class="wbtn${w===cw?' on':''}${done?' '+done:''}" onclick="selMiWeek(${w},this)">W${w}${!m?' 미정':''}</button>`;
+  }).join('');
+  document.getElementById('mi-week-wrap').style.display='block';
+  updateMiDesc();
+}
+
+function selMiWeek(w,btn){
+  miWeek=w;
+  document.querySelectorAll('#mi-weeks .wbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  updateMiDesc();
+  updateMiProgress();
+}
+
+function updateMiDesc(){
+  const m=WEEK_MISSIONS[miWeek];
+  const desc=document.getElementById('mi-mission-desc');
+  if(!m||!m[miTeam]){
+    desc.innerHTML='<div style="font-size:13px;color:var(--dim);text-align:center;padding:8px;">📢 이번 주 미션은 추후 공지될 예정이에요!</div>';
+    document.getElementById('mi-input-wrap').style.display='none';
+    return;
+  }
+  const wm=m[miTeam];
+  desc.innerHTML=`<div style="font-size:12px;color:var(--muted);line-height:1.8;">
+    <b style="color:var(--white)">WEEK ${miWeek} 미션</b><br>
+    📌 ${wm.label}<br>
+    🎯 팀 목표: <b style="color:var(--white)">${wm.goal.toLocaleString()} ${wm.unit}</b><br>
+    💡 ${wm.hint}
+  </div>`;
+  document.getElementById('mi-unit').textContent=wm.unit;
+  document.getElementById('mi-input-wrap').style.display='block';
+  updateMiProgress();
+}
+
+function updateMiProgress(){
+  if(!miTeam||!miName) return;
+  const t=TEAMS[miTeam];
+  const wm=WEEK_MISSIONS[miWeek]&&WEEK_MISSIONS[miWeek][miTeam];
+  if(!wm) return;
+  const k=miTeam+'_'+miName+'_mission_w'+miWeek;
+  const my=LD[k]||0;
+  document.getElementById('my-lbl').textContent=miName+' '+miWeek+'주차';
+  document.getElementById('my-val').textContent=my+' '+wm.unit;
+  document.getElementById('my-bar').style.width=Math.min(100,(my/(wm.goal/t.members.length))*100)+'%';
+  const tot=t.members.reduce((s,m)=>s+(LD[miTeam+'_'+m+'_mission_w'+miWeek]||0),0);
+  const pct=Math.min(100,(tot/wm.goal)*100);
+  document.getElementById('team-lbl').textContent='팀 합산 ('+miWeek+'주차)';
+  document.getElementById('team-val').textContent=tot+' / '+wm.goal+' '+wm.unit;
+  const tb=document.getElementById('team-bar');
+  tb.style.width=pct+'%'; tb.className='pfill '+t.pf;
+}
+
+async function submitMission(){
+  if(!miTeam||!miName){toast('팀과 이름을 선택하세요',1);return;}
+  const wm=WEEK_MISSIONS[miWeek]&&WEEK_MISSIONS[miWeek][miTeam];
+  if(!wm){toast('이번 주 미션이 아직 공지되지 않았어요',1);return;}
+  const v=parseFloat(document.getElementById('mi-val').value);
+  if(isNaN(v)||v<0){toast('올바른 값을 입력하세요',1);return;}
+  if(miMode==='add'){
+    if(v<=0){toast('0보다 큰 값을 입력하세요',1);return;}
+    const k=miTeam+'_'+miName+'_mission_w'+miWeek;
+    LD[k]=(LD[k]||0)+v; save();
+    await send({type:'mission',team:miTeam,name:miName,week:miWeek,data:v+' '+wm.unit});
+    toast(`✅ ${miName} W${miWeek} +${v}${wm.unit}`);
+  } else {
+    const k=miTeam+'_'+miName+'_mission_w'+miWeek;
+    LD[k]=v; save();
+    await send({type:'mission_fix',team:miTeam,name:miName,week:miWeek,data:`fix:${v} ${wm.unit}`});
+    toast(`✅ ${miName} W${miWeek} 수정: ${v}${wm.unit}`);
+  }
+  document.getElementById('mi-val').value='';
+  updateMiProgress();
+  buildMiWeekBtns();
+}
+
+// 미션 (주차별)
+let miMode='add';
+function setMode(m){
+  miMode=m;
+  document.getElementById('mode-add').className=m==='add'?'wbtn on':'wbtn';
+  document.getElementById('mode-fix').className=m==='fix'?'wbtn on':'wbtn';
+  document.getElementById('mode-hint').textContent=m==='add'?'운동한 만큼 입력하면 누적됩니다':'현재 총 기록을 이 숫자로 덮어씁니다 (0 입력 시 초기화)';
+  document.getElementById('mi-submit-btn').textContent=m==='add'?'기록 추가':'기록 수정';
+  document.getElementById('mi-submit-btn').className=m==='add'?'sbtn red':'sbtn orange';
+}
+
+
+// 야외운동
+function loadExtraState(){
+  if(!exTeam||!exName) return;
+  const ok=LD[`${exTeam}_${exName}_outdoor`]||'';
+  out1=ok.includes('p1:1'); out2=ok.includes('p2:1'); out3=ok.includes('p3:1'); out4=ok.includes('p4:1');
+  updateOutUI();
+}
+
+function toggleOut(p){
+  if(p===1) out1=!out1; else if(p===2) out2=!out2; else if(p===3) out3=!out3; else out4=!out4;
+  updateOutUI();
+}
+
+function updateOutUI(){
+  const b1=document.getElementById('out1-btn');
+  const b2=document.getElementById('out2-btn');
+  const b3=document.getElementById('out3-btn');
+  if(b1){b1.textContent=out1?'✅ 1회차 완료 (4/26 강희코치)':'❌ 1회차 4/26 강희코치'; b1.className=out1?'tbtn2 on':'tbtn2';}
+  if(b2){b2.textContent=out2?'✅ 2회차 완료 (5/3 준혁코치)':'❌ 2회차 5/3 준혁코치'; b2.className=out2?'tbtn2 on':'tbtn2';}
+  if(b3){b3.textContent=out3?'✅ 3회차 완료 (5/10 중현코치)':'❌ 3회차 5/10 중현코치'; b3.className=out3?'tbtn2 on':'tbtn2';}
+  const b4=document.getElementById('out4-btn');
+  if(b4){b4.textContent=out4?'✅ 4회차 완료 (5/25 도형코치)':'❌ 4회차 5/25 도형코치'; b4.className=out4?'tbtn2 on':'tbtn2';}
+  const _outCount=(out1?1:0)+(out2?1:0)+(out3?1:0)+(out4?1:0); const _outScore=Math.min(_outCount,3)*5; document.getElementById('out-score').textContent=`야외운동 점수: ${_outScore}점 (최대 15점 · 개인 점수만 반영)`;
+}
+
+async function submitOutdoor(){
+  if(!exTeam||!exName){toast('팀과 이름을 선택하세요',1);return;}
+  const s=Math.min((out1?1:0)+(out2?1:0)+(out3?1:0)+(out4?1:0),3)*5;
+  const str=`p1:${out1?1:0}|p2:${out2?1:0}|p3:${out3?1:0}|p4:${out4?1:0}|score:${s}`;
+  LD[`${exTeam}_${exName}_outdoor`]=str; save();
+  await send({type:'outdoor',team:exTeam,name:exName,data:str});
+  toast(`✅ ${exName} 야외운동 저장 (${s}점)`);
+}
+
+
+
+// 현황판
+function renderBoard(data){
+  const el=document.getElementById('board-wrap');
+  const cw=curWeek();
+  el.innerHTML=Object.entries(TEAMS).map(([coach,t])=>{
+    const wm=(WEEK_MISSIONS[cw]&&WEEK_MISSIONS[cw][coach])||null;
+    const unit=wm?wm.unit:'';
+    const goal=wm?wm.goal:0;
+    const teamName=t.pf==='pf-blue'?'🦴 빼빼로':'🏠 통통이';
+
+    const mTot=t.members.reduce((s,m)=>s+getMission(data,coach,m),0);
+    const mPct=goal>0?Math.min(100,(mTot/goal)*100).toFixed(1):'0.0';
+    const scores=t.members.map(m=>getTeamScore(data,coach,m));
+    const avgScore=(scores.reduce((a,b)=>a+b,0)/t.members.length).toFixed(1);
+
+    const mbars=t.members.map(m=>{
+      const mv=getMission(data,coach,m);
+      const perPerson=goal>0?goal/t.members.length:1;
+      const mp=Math.min(100,(mv/perPerson)*100);
+      const sc=getTotalScore(data,coach,m);
+      return `<div class="mrow">
+        <span class="mname">${m}</span>
+        <div class="mbar"><div class="pfill ${t.pf}" style="width:${isNaN(mp)?0:mp}%;height:100%;border-radius:100px"></div></div>
+        <span class="mval">${isNaN(mv)?0:mv}${unit}</span>
+        <span class="mscore">${isNaN(sc)?0:sc}점</span>
+      </div>`;
+    }).join('');
+
+    const atAvg=(t.members.reduce((s,m)=>s+getAttendScore(data,coach,m),0)/t.members.length).toFixed(1);
+    const miAvg=(t.members.reduce((s,m)=>s+getMissionDoneScore(data,coach,m),0)/t.members.length).toFixed(1);
+    const missionLabel=wm?`${wm.label||'미션'} W${cw}`:`W${cw} 미션 공지 예정`;
+
+    return `<div class="bcard ${t.cls}">
+      <div class="bhdr">
+        <div><div class="bc-coach">${coach} 코치 · ${t.members.length}명</div><div class="bc-name">${teamName}</div></div>
+        <div><div class="bc-total">${mPct}%</div><div class="bc-sub">${isNaN(mTot)?0:mTot}${goal>0?'/'+goal:''}${unit}</div></div>
+      </div>
+      <div class="prow"><div class="pbar" style="height:9px"><div class="pfill ${t.pf}" style="width:${mPct}%"></div></div></div>
+      <div class="score-grid">
+        <div class="sg-item"><div class="sg-num" style="color:var(--gold)">${isNaN(avgScore)?0:avgScore}</div><div class="sg-label">팀 평균점수</div></div>
+        <div class="sg-item"><div class="sg-num" style="color:var(--green)">${isNaN(atAvg)?0:atAvg}</div><div class="sg-label">출석점수</div></div>
+        <div class="sg-item"><div class="sg-num" style="color:var(--orange)">${isNaN(miAvg)?0:miAvg}</div><div class="sg-label">미션점수</div></div>
+      </div>
+      <div class="notice-box">📢 ${missionLabel}</div>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:6px;">멤버 &nbsp;·&nbsp; <span style="color:var(--white)">미션진행</span> &nbsp;·&nbsp; <span style="color:var(--green)">출석점수</span> &nbsp;·&nbsp; <span style="color:var(--gold)">개인총점</span></div>
+      <div class="mrows">${mbars}</div>
+    </div>`;
+  }).join('');
+}
+
+async function loadBoard(){
+  renderBoard({missions:{},attend:{},mdone:{},outdoor:{}});
+  try {
+    const data = await fetchData();
+    renderBoard(data);
+  } catch(e) {}
+}
+
+// 순위
+function renderRank(data){
+  const teamEl=document.getElementById('rank-team-wrap');
+  const persEl=document.getElementById('rank-personal-wrap');
+  const cw2=curWeek();
+
+  // 팀 순위 (출석 + 미션완료만, 야외운동 제외)
+  const teamRanks=Object.entries(TEAMS).map(([coach,t])=>{
+    const avg=t.members.reduce((s,m)=>s+getTeamScore(data,coach,m),0)/t.members.length;
+    const mTot=t.members.reduce((s,m)=>s+getMission(data,coach,m),0);
+    const wm2=(WEEK_MISSIONS[cw2]&&WEEK_MISSIONS[cw2][coach])||null; const g2=wm2?wm2.goal:0; const mPct=g2>0?(mTot/g2)*100:0;
+    return {coach,t,avg,mPct};
+  }).sort((a,b)=>b.avg-a.avg);
+
+  const medals=['🥇','🥈','🥉','4️⃣'];
+  teamEl.innerHTML=teamRanks.map((r,i)=>`
+    <div class="rcard ${i===0?'r1card':''}">
+      <div class="rnum r${i+1}">${medals[i]}</div>
+      <div class="rinfo">
+        <div class="rteam">${r.t.pf==='pf-blue'?'🦴 빼빼로':'🏠 통통이'} — ${r.coach} 코치</div>
+        <div class="rdet">팀 평균 ${r.avg.toFixed(1)}점 · 미션 ${r.mPct.toFixed(1)}%</div>
+      </div>
+      <div class="rpct" style="color:${r.t.color}">${r.avg.toFixed(0)}점</div>
+    </div>`).join('');
+
+  // 개인 순위 (출석 + 미션완료 + 야외운동)
+  const allMembers=[];
+  Object.entries(TEAMS).forEach(([coach,t])=>{
+    t.members.forEach(m=>{
+      const atSc=getAttendScore(data,coach,m);
+      const miSc=getMissionDoneScore(data,coach,m);
+      const outSc=getOutdoorScore(data,coach,m);
+      const total=atSc+miSc+outSc;
+      allMembers.push({coach,t,m,total,atSc,miSc,outSc});
+    });
+  });
+  allMembers.sort((a,b)=>b.total-a.total);
+
+  const pMedals=['🥇','🥈','🥉'];
+  persEl.innerHTML=allMembers.map((p,i)=>{
+    const medal=i<3?pMedals[i]:`${i+1}`;
+    return `<div class="rcard ${i===0?'r1card':''}">
+      <div class="rnum ${i===0?'r1':i===1?'r2':i===2?'r3':'r4'}" style="font-size:${i<3?'26':'13'}px;width:32px">${medal}</div>
+      <div class="rinfo">
+        <div class="rteam">${p.m}</div>
+        <div class="rdet" style="color:${p.t.color}">${p.coach} 코치</div>
+        <div class="rdet">출석 ${p.atSc}점 · 미션완료 ${p.miSc}점 · 야외 ${p.outSc}점</div>
+      </div>
+      <div class="rpct" style="color:var(--gold);font-size:22px">${p.total}점</div>
+    </div>`;
+  }).join('');
+}
+
+async function loadRank(){
+  renderRank({missions:{},attend:{},mdone:{},outdoor:{}});
+  try {
+    const data = await fetchData();
+    renderRank(data);
+  } catch(e) {}
+}
+
+// 데이터
+async function fetchData(){
+  const remote={missions:{},attend:{},mdone:{},outdoor:{}};
+  try {
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),5000);
+    const res=await fetch(API,{signal:controller.signal});
+    clearTimeout(timeout);
+    const raw=await res.json();
+    if(Array.isArray(raw)){
+      raw.forEach(row=>{
+        const[team,name,type,val]=row;
+        if(!team||!name||!type) return;
+        const k=team+'_'+name;
+        if(type==='mission') remote.missions[k]=(remote.missions[k]||0)+(parseFloat(val)||0);
+        else if(type==='attend_score') remote.attend[k]=(remote.attend[k]||0)+(parseFloat(val)||0);
+        else if(type==='mission_done_score') remote.mdone[k]=(remote.mdone[k]||0)+(parseFloat(val)||0);
+        else if(type==='outdoor_score') remote.outdoor[k]=(remote.outdoor[k]||0)+(parseFloat(val)||0);
+      });
+    }
+  } catch(e){}
+  return remote;
+}
+
+function getMission(data,team,name){
+  const k=team+'_'+name;
+  return Math.round(((data.missions[k]||0)+(LD[k+'_mission']||0))*10)/10;
+}
+
+function getAttendScore(data,team,name){
+  const k=team+'_'+name;
+  const remote=parseInt(data.attend[k])||0;
+  let local=0;
+  for(let w=1;w<=WEEKS;w++){
+    const s=LD[`${team}_${name}_w${w}`]||'';
+    if(s){const m=s.match(/score:(\d+)/);local+=m?parseInt(m[1]):0;}
+  }
+  const val=Math.max(isNaN(remote)?0:remote, isNaN(local)?0:local);
+  return isNaN(val)?0:val;
+}
+
+function getMissionDoneScore(data,team,name){
+  const k=team+'_'+name;
+  const remote=parseInt(data.mdone[k])||0;
+  const s=LD[`${team}_${name}_mdone`]||'';
+  let local=0;
+  if(s){const m=s.match(/score:(\d+)/);local=m?parseInt(m[1]):0;}
+  return Math.max(remote,local);
+}
+
+function getOutdoorScore(data,team,name){
+  const k=team+'_'+name;
+  const remote=parseInt(data.outdoor[k])||0;
+  const s=LD[`${team}_${name}_outdoor`]||'';
+  let local=0;
+  if(s){const m=s.match(/score:(\d+)/);local=m?parseInt(m[1]):0;}
+  const val=Math.max(isNaN(remote)?0:remote, isNaN(local)?0:local);
+  return isNaN(val)?0:val;
+}
+
+function getTeamScore(data,team,name){
+  // 팀 점수: 출석 + 미션완료 (야외운동 제외)
+  return getAttendScore(data,team,name)+getMissionDoneScore(data,team,name);
+}
+function getTotalScore(data,team,name){
+  // 개인 총점: 출석 + 미션완료 + 야외운동
+  return getAttendScore(data,team,name)+getMissionDoneScore(data,team,name)+getOutdoorScore(data,team,name);
+}
+
+// 전송
+function send(payload){
+  return new Promise(resolve=>{
+    const params=new URLSearchParams();
+    Object.entries(payload).forEach(([k,v])=>params.append(k,String(v)));
+    const img=new Image();
+    img.onload=img.onerror=()=>resolve();
+    img.src=API+'?'+params.toString();
+    setTimeout(resolve,5000);
+  });
+}
+
+function save(){localStorage.setItem('c_data',JSON.stringify(LD));}
+
+function toast(msg,err=0){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className=err?'err show':'show';
+  setTimeout(()=>t.className='',3000);
+}
+
+
+// ═══════════════════════════════════════
+// 이름 선택시 서버에서 해당 사람 출석 즉시 복원
+// ═══════════════════════════════════════
+async function loadUserAttend(team, name) {
+  if (!API) return;
+  try {
+    const ctrl = new AbortController();
+    const to = setTimeout(()=>ctrl.abort(), 8000);
+    const res = await fetch(API + '?raw=1', {signal: ctrl.signal});
+    clearTimeout(to);
+    const rawRows = await res.json();
+    if (!Array.isArray(rawRows)) return;
+
+    // 이 사람의 출석 데이터만 필터링 (최신 기록으로 덮어씀)
+    rawRows.forEach(row => {
+      const rTeam = row[1], rName = row[2], rType = row[3], rWeek = row[4], rVal = row[5];
+      if (!rTeam || !rName || !rType) return;
+      if (rTeam !== team || rName !== name) return;
+
+      if (rType === 'attend') {
+        // week 컬럼 또는 data 문자열에서 주차 추출
+        let wn = String(rWeek || '');
+        if (!wn || wn === 'undefined' || wn === 'null' || wn === '') {
+          const wm = String(rVal).match(/week:(\d+)/);
+          wn = wm ? wm[1] : '1';
+        }
+        // 항상 최신 데이터로 덮어쓰기
+        LD[team + '_' + name + '_w' + wn] = String(rVal);
+      }
+    });
+    save();
+
+    // 현재 주차 달력 즉시 업데이트
+    const curKey = team + '_' + name + '_w' + atWeek;
+    if (LD[curKey]) {
+      const m = LD[curKey].match(/days:([\d,]*)/);
+      atDays = m && m[1] ? m[1].split(',').map(Number).filter(n=>!isNaN(n)) : [];
+    } else {
+      atDays = [];
+    }
+    buildCalendar();
+  } catch(e) {
+    // 서버 실패해도 로컬 데이터로 표시
+    const curKey = team + '_' + name + '_w' + atWeek;
+    if (LD[curKey]) {
+      const m = LD[curKey].match(/days:([\d,]*)/);
+      atDays = m && m[1] ? m[1].split(',').map(Number).filter(n=>!isNaN(n)) : [];
+    }
+    buildCalendar();
+  }
+}
+
+window.onload=()=>{
+  // 현황판/순위 즉시 로드 (로컬 데이터로)
+  loadBoard();
+  loadRank();
+  // 구글 시트에서 데이터 복원 (백그라운드, 완료 후 현황판 갱신)
+  restoreAllFromServer().then(()=>{
+    loadBoard();
+    loadRank();
+  }).catch(()=>{});
+};
+
+// 페이지 로드시 구글 시트 데이터 전체 복원 (항상 서버 우선)
+async function restoreAllFromServer() {
+  if (!API) return;
+  try {
+    // 1단계: 원시 데이터 전체 가져오기 (출석 + 미션 주차별)
+    const ctrl=new AbortController();
+    const to=setTimeout(()=>ctrl.abort(),8000);
+    const res = await fetch(API + '?raw=1', {signal:ctrl.signal});
+    clearTimeout(to);
+    const rawRows = await res.json();
+    if (Array.isArray(rawRows)) {
+      // 주차별 최신 출석 데이터 수집 (같은 사람/주차면 최신 것만)
+      const latestAttend = {};
+      const missionByWeek = {};
+
+      rawRows.forEach(row => {
+        const team = row[1], name = row[2], type = row[3], week = row[4], val = row[5];
+        if (!team || !name || !type) return;
+        const wn = String(week || '1');
+
+        if (type === 'attend') {
+          // week 컬럼이 비어있으면 data 문자열에서 파싱 (구 데이터 호환)
+          let awn = wn;
+          if (!awn || awn === '' || awn === 'undefined' || awn === 'null') {
+            const wMatch = String(val).match(/week:(\d+)/);
+            awn = wMatch ? wMatch[1] : '1';
+          }
+          // 같은 사람/주차면 마지막(최신) 기록으로 덮어씀
+          latestAttend[team + '_' + name + '_w' + awn] = String(val);
+        }
+        if (type === 'mission') {
+          const k = team + '_' + name + '_w' + wn;
+          missionByWeek[k] = (missionByWeek[k] || 0) + (parseFloat(val) || 0);
+        }
+        if (type === 'mission_fix') {
+          const fixMatch = String(val).match(/fix:([\d.]+)/);
+          if (fixMatch) {
+            let mwn = wn;
+            if (!mwn || mwn === '' || mwn === 'undefined') mwn = '1';
+            const k = team + '_' + name + '_w' + mwn;
+            missionByWeek[k] = parseFloat(fixMatch[1]);
+          }
+        }
+        if (type === 'outdoor') {
+          LD[team + '_' + name + '_outdoor'] = String(val);
+        }
+      });
+
+      // localStorage에 서버 데이터로 덮어쓰기
+      Object.keys(latestAttend).forEach(k => { LD[k] = latestAttend[k]; });
+      Object.keys(missionByWeek).forEach(k => { if (missionByWeek[k] > 0) LD[k] = missionByWeek[k]; });
+      save();
+    }
+  } catch(e) {}
+}
+</script>
+</body>
+</html>
